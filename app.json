@@ -7,7 +7,7 @@
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "AniMusic",
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff"
   },
   "tabBar": {
