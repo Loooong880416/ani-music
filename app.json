@@ -3,7 +3,8 @@
     "pages/main-music/main-music",
     "pages/main-video/main-video",
     "pages/detail-video/detail-video",
-    "pages/detail_search/detail_search"
+    "pages/detail_search/detail_search",
+    "pages/detail-song/detail-song"
   ],
   "window": {
     "navigationBarTextStyle": "black",

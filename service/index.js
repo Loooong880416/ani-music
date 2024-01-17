@@ -1,3 +1,4 @@
+import {baseURL} from "./config"
 // 两种封装方法
 
 // 封装成函数
@@ -47,4 +48,4 @@ class AniRequest {
         })
     }
 }
-export const aniRequest = new AniRequest("http://codercba.com:9002")
+export const aniRequest = new AniRequest(baseURL)
