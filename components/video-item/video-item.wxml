@@ -1,6 +1,6 @@
 <!--components/video-item/video-item.wxml-->
 <wxs src="/utils/format.wxs" module="fmt"></wxs>
-<view class="item">
+<view class="item" bindtap="onItemTap">
     <view class="album">
         <image class="image" mode="widthFix" src="{{itemData.cover}}" />
         <view class="info">
