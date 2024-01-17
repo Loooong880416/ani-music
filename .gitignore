@@ -1,0 +1,15 @@
+# 忽略编译后的文件
+dist/
+
+# 避免提交的文件夹
+miniprogram_npm
+node_modules/
+.vscode
+
+# 避免提交的文件
+yarn.lock
+yarn-error.lock
+
+.project
+unpackage/
+.DS_Store

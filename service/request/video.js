@@ -1,7 +1,7 @@
 // 视频页面的所有接口
 import {
     aniRequest
-} from "./index"
+} from "../index"
 
 export function getTopMv(limit = 20, offset = 0) {
     return aniRequest.get({
