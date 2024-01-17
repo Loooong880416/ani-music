@@ -1,5 +1,5 @@
 // pages/main-music/main-music.js
-import { getMusicBanner } from "../../service/request/music"
+import { getMusicBanner, getPlayListDetail } from "../../service/request/music"
 import { querySelect } from "../../utils/query-select"
 import throttle from "../../utils/throttle"
 
@@ -13,6 +13,8 @@ Page({
     searchValue:"",
     banners:[],
     bannerHeight:150,
+
+    recommendSongs:[],
   },
 
   /**
@@ -20,12 +22,20 @@ Page({
    */
   onLoad() {
     this.fetchMusiceBanner()
+    this.fetchRecommendSongs()
   },
 //   轮播图
   async fetchMusiceBanner(){
     const res = await getMusicBanner()
     this.setData({
         banners:res.banners
+    })
+  },
+  async fetchRecommendSongs(){
+      const res = await getPlayListDetail(3778678)
+      const playlist = res.playlist.tracks.slice(0,6)
+    this.setData({
+        recommendSongs:playlist
     })
   },
   onSearchClick(){
@@ -38,6 +48,9 @@ Page({
     this.setData({
         bannerHeight:res[0].height
     })
+  },
+  onRecommentMoreClick(){
+      console.log('kji')
   },
 
   /**

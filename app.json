@@ -2,7 +2,6 @@
   "pages": [
     "pages/main-music/main-music",
     "pages/main-video/main-video",
-    "components/video-item/video-item",
     "pages/detail-video/detail-video",
     "pages/detail_search/detail_search"
   ],
@@ -29,15 +28,5 @@
     ]
   },
   "style": "v2",
-  "rendererOptions": {
-    "skyline": {
-      "defaultDisplayBlock": true,
-      "disableABTest": true,
-      "sdkVersionBegin": "3.0.0",
-      "sdkVersionEnd": "15.255.255"
-    }
-  },
-  "componentFramework": "glass-easel",
-  "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "sitemapLocation": "sitemap.json"
 }
