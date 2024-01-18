@@ -1,7 +1,8 @@
 // pages/main-music/main-music.js
 import {
     getMusicBanner,
-    getPlayListDetail
+    getPlayListDetail,
+    getHotSongList
 } from "../../service/request/music"
 import {
     querySelect
@@ -10,6 +11,8 @@ import throttle from "../../utils/throttle"
 import rankingStore from "../../store/rankingStore"
 
 const querySelectThrottle = throttle(querySelect)
+const app = getApp()
+
 Page({
 
     /**
@@ -20,7 +23,9 @@ Page({
         banners: [],
         bannerHeight: 150,
 
-        recommendSongs: [],
+        recommendSongs: [],//推荐歌曲
+        hotSongList:[],//热门歌单
+        screenWidth:375,
     },
 
     /**
@@ -37,6 +42,11 @@ Page({
         })
         // 发起action
         rankingStore.dispatch("fetchRankingSongAction")
+
+        this.fetchHotSongList()
+
+        // 获取屏幕尺寸
+        this.setData({screenWidth: app.globalData.screenWidth})
     },
     //   轮播图
     async fetchMusiceBanner() {
@@ -52,6 +62,12 @@ Page({
     //         recommendSongs: playlist
     //     })
     // },
+    async fetchHotSongList(){
+        const res = await getHotSongList()
+        this.setData({
+            hotSongList:res.playlists
+        })
+    },
     onSearchClick() {
         wx.navigateTo({
             url: '/pages/detail_search/detail_search',

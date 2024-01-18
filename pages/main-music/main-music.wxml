@@ -1,27 +1,11 @@
 <!--pages/main-music/main-music.wxml-->
-<van-search
-  value="{{ searchValue }}"
-  shape="round"
-  background="#f5f5f5"
-  placeholder="请输入搜索关键词"
-  bind:click-input="onSearchClick"
-/>
+<van-search value="{{ searchValue }}" shape="round" background="#f5f5f5" placeholder="请输入搜索关键词" bind:click-input="onSearchClick" />
 
 <!-- 轮播图 -->
-<swiper 
-    class="banner"
-    circular
-    indicator-dots
-    style="height: {{bannerHeight}}px;"
->
+<swiper class="banner" circular indicator-dots style="height: {{bannerHeight}}px;">
     <block wx:for="{{banners}}" wx:key="targetId">
         <swiper-item class="item">
-            <image 
-                class="banner-image" 
-                src="{{item.imageUrl}}" 
-                mode="widthFix"
-                bindload="onBannerImageLoad"
-            />
+            <image class="banner-image" src="{{item.imageUrl}}" mode="widthFix" bindload="onBannerImageLoad" />
         </swiper-item>
     </block>
 </swiper>
@@ -31,7 +15,19 @@
     <area-header title="推荐歌曲" bind:moreClick="onRecommentMoreClick" />
     <view class="list">
         <block wx:for="{{recommendSongs}}" wx:key="id">
-            <song-item-v1 itemData="{{item}}"/>
+            <song-item-v1 itemData="{{item}}" />
         </block>
     </view>
+</view>
+
+<!-- 热门歌单 -->
+<view class="hot-menu">
+    <area-header title="热门歌单" bind:moreClick="onRecommentMoreClick" />
+    <scroll-view class="list" scroll-x enable-flex style="width: {{screenWidth}}px;">
+        <block wx:for="{{hotSongList}}" wx:key="id">
+            <view class="item">
+                <hot-song-item itemData="{{item}}" />
+            </view>
+        </block>
+    </scroll-view>
 </view>

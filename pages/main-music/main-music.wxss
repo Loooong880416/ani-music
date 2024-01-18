@@ -14,3 +14,16 @@ page{
 .banner-image{
     width: 100%;
 }
+/* 热门歌单 */
+.hot-menu .list{
+    margin-left: -24rpx;
+    white-space: nowrap;
+}
+.hot-menu .list .item{
+    display: inline-block;
+    width: 220rpx;
+    margin-right: 24rpx;
+}
+.hot-menu .list .item:first-of-type{
+    margin-left: 24rpx;
+}
