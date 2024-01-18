@@ -1,6 +1,7 @@
 // pages/detail-song/detail-song.js
 import rankingStore from "../../store/rankingStore"
 import pinnacleStore from "../../store/pinnacleStore"
+import { getPlayListDetail } from "../../service/request/music"
 
 Page({
 
@@ -11,6 +12,7 @@ Page({
         songs: [],
         type: "ranking",
         key: "newRanking",
+        id: 0,
 
         songInfo: {}
     },
@@ -34,9 +36,14 @@ Page({
             this.fetchMenuSongInfo()
         }
     },
-    fetchMenuSongInfo() { },
+    async fetchMenuSongInfo() {
+        const res = await getPlayListDetail(this.data.id)
+        this.setData({
+            songInfo:res.playlist
+        })
+    },
     handleRanking(value) {
-        if(this.data.type === "recommend"){
+        if (this.data.type === "recommend") {
             value.name = "推荐歌曲"
         }
         this.setData({ songInfo: value })

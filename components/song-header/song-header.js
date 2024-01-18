@@ -1,11 +1,11 @@
-// components/hot-song-item/hot-song-item.js
+// components/song-header/song-header.js
 Component({
 
   /**
    * 组件的属性列表
    */
   properties: {
-    itemData:{
+    songInfo:{
         type:Object,
         value:{}
     }
@@ -22,11 +22,6 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    onMenuItemTap(){
-        const id = this.properties.itemData.id
-        wx.navigateTo({
-          url: `/pages/detail-song/detail-song?type=menu&id=${id}`,
-        })
-    }
+
   }
 })

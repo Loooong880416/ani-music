@@ -21,13 +21,14 @@ Page({
     data: {
         searchValue: "",
         banners: [],
-        bannerHeight: 150,
+        bannerHeight: 0,
 
         recommendSongs: [],//推荐歌曲
         hotSongList: [],//热门歌单
         recommendMenuList: [],//推荐歌单
         // 巅峰榜数据
-        rankingInfos: {}
+        rankingInfos: {},
+        isRankingData: false
     },
 
     /**
@@ -44,7 +45,7 @@ Page({
         this.fetchHotSongList()
 
         // 巅峰榜的三个监听
-        for (const key in rankingsMaps){
+        for (const key in rankingsMaps) {
             pinnacleStore.onState(key, this.getRankingHandler(key))
         }
     },
@@ -86,13 +87,19 @@ Page({
 
     // 从store中获取数据
     handlerRecommendSongs(value) {
-        if(!value.tracks) return
+        if (!value.tracks) return
         this.setData({
             recommendSongs: value.tracks.slice(0, 6)
         })
     },
     getRankingHandler(type) {
         return value => {
+            if (!value.name) return
+            if (!this.isRankingData) {
+                this.setData({
+                    isRankingData: true
+                })
+            }
             const rank = { ...this.data.rankingInfos, [type]: value }
             this.setData({
                 rankingInfos: rank
