@@ -9,6 +9,7 @@ import {
 } from "../../utils/query-select"
 import throttle from "../../utils/throttle"
 import rankingStore from "../../store/rankingStore"
+import pinnacleStore from "../../store/pinnacleStore"
 
 const querySelectThrottle = throttle(querySelect)
 
@@ -23,8 +24,10 @@ Page({
         bannerHeight: 150,
 
         recommendSongs: [],//推荐歌曲
-        hotSongList:[],//热门歌单
-        recommendMenuList:[],//推荐歌单
+        hotSongList: [],//热门歌单
+        recommendMenuList: [],//推荐歌单
+        // 巅峰榜数据
+        rankingInfos: {}
     },
 
     /**
@@ -33,16 +36,18 @@ Page({
     onLoad() {
         this.fetchMusiceBanner()
         // this.fetchRecommendSongs()
-        
-        rankingStore.onState("rankingSongs", (value) => {
-            this.setData({
-                recommendSongs: value.slice(0,6)
-            })
-        })
+
+        rankingStore.onState("rankingSongs", this.handlerRecommendSongs)
         // 发起action
         rankingStore.dispatch("fetchRankingSongAction")
-
+        pinnacleStore.dispatch("fetchRankingDataAction")
         this.fetchHotSongList()
+
+        // 巅峰榜的三个监听
+        pinnacleStore.onState("newRanking",this.getRankingHandler("newRanking")) 
+        pinnacleStore.onState("originRanking",this.getRankingHandler("originRanking")) 
+        pinnacleStore.onState("upRanking",this.getRankingHandler("upRanking")) 
+
     },
     //   轮播图
     async fetchMusiceBanner() {
@@ -58,15 +63,15 @@ Page({
     //         recommendSongs: playlist
     //     })
     // },
-    async fetchHotSongList(){
-        getHotSongList('全部',6).then(res =>{
+    async fetchHotSongList() {
+        getHotSongList('全部', 6).then(res => {
             this.setData({
-                hotSongList:res.playlists
+                hotSongList: res.playlists
             })
         })
-        getHotSongList('华语',6).then(res =>{
+        getHotSongList('华语', 6).then(res => {
             this.setData({
-                recommendMenuList:res.playlists
+                recommendMenuList: res.playlists
             })
         })
     },
@@ -87,52 +92,22 @@ Page({
         })
     },
 
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady() {
-
+    // 从store中获取数据
+    handlerRecommendSongs(value) {
+        this.setData({
+            recommendSongs: value.slice(0, 6)
+        })
     },
-
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow() {
-
+    getRankingHandler(type){
+        return value => {
+            const rank = {...this.data.rankingInfos, [type]: value}
+            this.setData({
+                rankingInfos: rank
+            })
+        }
     },
-
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
-    onHide() {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面卸载
-     */
-    onUnload() {
-
-    },
-
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
-    onPullDownRefresh() {
-
-    },
-
-    /**
-     * 页面上拉触底事件的处理函数
-     */
-    onReachBottom() {
-
-    },
-
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage() {
-
+    onUnload(){
+        recommendSongs.offState("rankingSongs",this,this.handlerRecommendSongs)
+        pinnacleStore.offState("")
     }
 })

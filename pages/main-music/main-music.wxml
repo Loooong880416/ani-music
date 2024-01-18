@@ -22,3 +22,13 @@
 
 <menu-area title="热门歌单" menuList="{{hotSongList}}"/>
 <menu-area title="推荐歌单" menuList="{{recommendMenuList}}"/>
+
+<!-- 巅峰榜 -->
+<view class="ranking">
+    <area-header title="巅峰榜" hasMore="{{false}}" />
+    <view class="ranking-list">
+        <block wx:for="{{rankingInfos}}" wx:key="id">
+            <ranking-item itemData="{{item}}"/>
+        </block>
+    </view>
+</view>
