@@ -31,3 +31,9 @@ export function getHotSongList(cat = "全部", limit = 0, offset = 0) {
         }
     })
 }
+
+export function getSongMenuTag(){
+    return aniRequest.get({
+        url:"/playlist/hot"
+    })
+}

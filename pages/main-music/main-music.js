@@ -11,7 +11,6 @@ import throttle from "../../utils/throttle"
 import rankingStore from "../../store/rankingStore"
 
 const querySelectThrottle = throttle(querySelect)
-const app = getApp()
 
 Page({
 
@@ -25,7 +24,7 @@ Page({
 
         recommendSongs: [],//推荐歌曲
         hotSongList:[],//热门歌单
-        screenWidth:375,
+        recommendMenuList:[],//推荐歌单
     },
 
     /**
@@ -44,9 +43,6 @@ Page({
         rankingStore.dispatch("fetchRankingSongAction")
 
         this.fetchHotSongList()
-
-        // 获取屏幕尺寸
-        this.setData({screenWidth: app.globalData.screenWidth})
     },
     //   轮播图
     async fetchMusiceBanner() {
@@ -63,9 +59,15 @@ Page({
     //     })
     // },
     async fetchHotSongList(){
-        const res = await getHotSongList()
-        this.setData({
-            hotSongList:res.playlists
+        getHotSongList('全部',6).then(res =>{
+            this.setData({
+                hotSongList:res.playlists
+            })
+        })
+        getHotSongList('华语',6).then(res =>{
+            this.setData({
+                recommendMenuList:res.playlists
+            })
         })
     },
     onSearchClick() {
