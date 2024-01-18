@@ -1,4 +1,4 @@
-// components/ranking-item/ranking-item.js
+// components/song-item-v2/song-item-v2.js
 Component({
 
   /**
@@ -9,9 +9,9 @@ Component({
         type:Object,
         value:{}
     },
-    key:{
-        type:String,
-        value:"newRanking"
+    index:{
+        type:Number,
+        value:-1
     }
   },
 
@@ -26,10 +26,9 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    onRankingItemTop(){
-        wx.navigateTo({
-          url: `/pages/detail-song/detail-song?type=ranking&key=${this.properties.key}`,
-        })
-    }
-  }
+
+  },
+  options: {
+    addGlobalClass: true
+},
 })

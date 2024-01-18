@@ -9,7 +9,7 @@ import {
 } from "../../utils/query-select"
 import throttle from "../../utils/throttle"
 import rankingStore from "../../store/rankingStore"
-import pinnacleStore from "../../store/pinnacleStore"
+import pinnacleStore, { rankingsMaps } from "../../store/pinnacleStore"
 
 const querySelectThrottle = throttle(querySelect)
 
@@ -37,17 +37,16 @@ Page({
         this.fetchMusiceBanner()
         // this.fetchRecommendSongs()
 
-        rankingStore.onState("rankingSongs", this.handlerRecommendSongs)
+        rankingStore.onState("rankingSongsInfo", this.handlerRecommendSongs)
         // 发起action
         rankingStore.dispatch("fetchRankingSongAction")
         pinnacleStore.dispatch("fetchRankingDataAction")
         this.fetchHotSongList()
 
         // 巅峰榜的三个监听
-        pinnacleStore.onState("newRanking",this.getRankingHandler("newRanking")) 
-        pinnacleStore.onState("originRanking",this.getRankingHandler("originRanking")) 
-        pinnacleStore.onState("upRanking",this.getRankingHandler("upRanking")) 
-
+        for (const key in rankingsMaps){
+            pinnacleStore.onState(key, this.getRankingHandler(key))
+        }
     },
     //   轮播图
     async fetchMusiceBanner() {
@@ -56,13 +55,6 @@ Page({
             banners: res.banners
         })
     },
-    // async fetchRecommendSongs() {
-    //     const res = await getPlayListDetail(3778678)
-    //     const playlist = res.playlist.tracks.slice(0, 6)
-    //     this.setData({
-    //         recommendSongs: playlist
-    //     })
-    // },
     async fetchHotSongList() {
         getHotSongList('全部', 6).then(res => {
             this.setData({
@@ -88,26 +80,27 @@ Page({
     },
     onRecommentMoreClick() {
         wx.navigateTo({
-            url: '/pages/detail-song/detail-song',
+            url: '/pages/detail-song/detail-song?type=recommend',
         })
     },
 
     // 从store中获取数据
     handlerRecommendSongs(value) {
+        if(!value.tracks) return
         this.setData({
-            recommendSongs: value.slice(0, 6)
+            recommendSongs: value.tracks.slice(0, 6)
         })
     },
-    getRankingHandler(type){
+    getRankingHandler(type) {
         return value => {
-            const rank = {...this.data.rankingInfos, [type]: value}
+            const rank = { ...this.data.rankingInfos, [type]: value }
             this.setData({
                 rankingInfos: rank
             })
         }
     },
-    onUnload(){
-        recommendSongs.offState("rankingSongs",this,this.handlerRecommendSongs)
+    onUnload() {
+        recommendSongs.offState("rankingSongsInfo", this.handlerRecommendSongs)
         pinnacleStore.offState("")
     }
 })
