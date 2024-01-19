@@ -1,7 +1,11 @@
 // pages/music-player/music-player.js
 import { getSongDetail, getSongLyric } from "../../service/request/player"
+import throttle from "../../utils/throttle"
 
 const app = getApp()
+// 创建播放器
+const audioContext = wx.createInnerAudioContext()
+
 Page({
 
     /**
@@ -11,13 +15,16 @@ Page({
         id: 0,
         currentSong: {},
         lyricString: "",
-        statusHeight:20,
-        currentPage:0,
-        contentHeight:0,
-        currentLyricText:"",
-        pageTitles:["歌曲","歌词"],
-        currentTime:0,
-        durationTime:0,
+        statusHeight: 20,
+        currentPage: 0,
+        contentHeight: 0,
+        currentLyricText: "",
+        pageTitles: ["歌曲", "歌词"],
+        currentTime: 0,
+        durationTime: 0,
+        sliderValue: 0,
+        isSliderChanging: false,
+        isWaiting: false,
     },
 
     /**
@@ -33,11 +40,42 @@ Page({
         this.setData({ id })
         this.fetchMusicDetails()
         this.fetchSongLyric()
+
+        // 播放当前的歌曲
+        audioContext.src = `https://music.163.com/song/media/outer/url?id=${id}.mp3`
+        audioContext.autoplay = false
+
+        // 监听播放的进度
+        const throttlUpdateProgress = throttle(this.updateProgress, 500, {leading: false})
+        audioContext.onTimeUpdate(() => {
+            // 没有滑动滑块时
+            if (!this.data.isSliderChanging && !this.data.isWaiting) {
+                throttlUpdateProgress()
+            }
+        })
+        audioContext.onWaiting(() => {
+            audioContext.pause()
+        })
+        audioContext.onCanplay(() => {
+            // audioContext.play()
+        })
+    },
+    updateProgress() {
+        // 记录当前时间
+        this.setData({
+            currentTime: audioContext.currentTime * 1000
+        })
+        // 修改slidervalue
+        const sliderValue = this.data.currentTime / this.data.durationTime * 100
+        this.setData({
+            sliderValue
+        })
     },
     async fetchMusicDetails() {
         const res = await getSongDetail(this.data.id)
         this.setData({
-            currentSong: res.songs[0]
+            currentSong: res.songs[0],
+            durationTime: res.songs[0].dt
         })
     },
     async fetchSongLyric() {
@@ -46,21 +84,45 @@ Page({
             lyricString: res.lrc.lyric
         })
     },
-    onSwiperChange(event){
+    onSwiperChange(event) {
         this.setData({
-            currentPage:event.detail.current
+            currentPage: event.detail.current
         })
     },
-    onNavTabItemTap(event){
+    onNavTabItemTap(event) {
         const index = event.currentTarget.dataset.index
         this.setData({
             currentPage: index
         })
     },
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
+    onSliderChange(event) {
+        this.data.isWaiting = true
+        setTimeout(()=>{
+            this.data.isWaiting = false
+        },500)
+        const value = event.detail.value
+        const currentTime = value / 100 * this.data.durationTime
+        // 设置播放器，播放计算出的时间
+        audioContext.seek(currentTime / 1000)
+        this.setData({
+            currentTime,
+            isSliderChanging: false,
+            sliderValue: value
+        })
+    },
+    onSliderChanging(event) {
+        const value = event.detail.value
+        const currentTime = value / 100 * this.data.durationTime
+        this.setData({
+            currentTime
+        })
+        // 当前正在滑动
+        this.data.isSliderChanging = true
+    },
+    /**
+     * 生命周期函数--监听页面初次渲染完成
+     */
+    onReady() {
 
     },
 

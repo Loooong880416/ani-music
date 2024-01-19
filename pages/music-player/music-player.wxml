@@ -29,7 +29,13 @@
             {{currentLyricText}}jijij
         </view>
         <view class="progress">
-            <slider class="slider" block-size="12" />
+            <slider 
+            class="slider" 
+            block-size="12" 
+            value="{{sliderValue}}" 
+            bindchange="onSliderChange"
+            bindchanging="onSliderChanging"
+            />
             <view class="time">
                 <view class="current">{{fmt.formatTime(currentTime)}}</view>
                 <view class="duration">{{fmt.formatTime(durationTime)}}</view>
