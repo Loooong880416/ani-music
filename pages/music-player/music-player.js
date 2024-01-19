@@ -1,6 +1,7 @@
 // pages/music-player/music-player.js
 import { getSongDetail, getSongLyric } from "../../service/request/player"
 import throttle from "../../utils/throttle"
+import { parseLyric } from "../../utils/parse-lyric"
 
 const app = getApp()
 // 创建播放器
@@ -19,12 +20,15 @@ Page({
         currentPage: 0,
         contentHeight: 0,
         currentLyricText: "",
+        currentLyricIndex: -1,
         pageTitles: ["歌曲", "歌词"],
         currentTime: 0,
         durationTime: 0,
         sliderValue: 0,
         isSliderChanging: false,
         isWaiting: false,
+        isPlaying: true,
+        lyricInfos: [],
     },
 
     /**
@@ -46,12 +50,26 @@ Page({
         audioContext.autoplay = false
 
         // 监听播放的进度
-        const throttlUpdateProgress = throttle(this.updateProgress, 500, {leading: false})
+        const throttlUpdateProgress = throttle(this.updateProgress, 500, { leading: false })
         audioContext.onTimeUpdate(() => {
-            // 没有滑动滑块时
+            // 没有滑动滑块时更新歌曲的进度
             if (!this.data.isSliderChanging && !this.data.isWaiting) {
                 throttlUpdateProgress()
             }
+
+            // 匹配正确的歌词
+            if (!this.data.lyricInfos.length) return
+            let index = this.data.lyricInfos.length - 1
+            for (let i = 0; i < this.data.lyricInfos.length; i++) {
+                const info = this.data.lyricInfos[i]
+                if (info.time > audioContext.currentTime * 1000) {
+                    index = i - 1
+                    break;
+                }
+            }
+            if (index === this.data.currentLyricIndex) return
+            const currentLyricText = this.data.lyricInfos[index].text
+            this.setData({ currentLyricText, currentLyricIndex: index })
         })
         audioContext.onWaiting(() => {
             audioContext.pause()
@@ -62,12 +80,10 @@ Page({
     },
     updateProgress() {
         // 记录当前时间
-        this.setData({
-            currentTime: audioContext.currentTime * 1000
-        })
         // 修改slidervalue
         const sliderValue = this.data.currentTime / this.data.durationTime * 100
         this.setData({
+            currentTime: audioContext.currentTime * 1000,
             sliderValue
         })
     },
@@ -78,11 +94,12 @@ Page({
             durationTime: res.songs[0].dt
         })
     },
+    // 解析歌词
     async fetchSongLyric() {
         const res = await getSongLyric(this.data.id)
-        this.setData({
-            lyricString: res.lrc.lyric
-        })
+        const lyricString = res.lrc.lyric
+        const lyricInfos = parseLyric(lyricString)
+        this.setData({ lyricInfos })
     },
     onSwiperChange(event) {
         this.setData({
@@ -97,9 +114,9 @@ Page({
     },
     onSliderChange(event) {
         this.data.isWaiting = true
-        setTimeout(()=>{
+        setTimeout(() => {
             this.data.isWaiting = false
-        },500)
+        }, 500)
         const value = event.detail.value
         const currentTime = value / 100 * this.data.durationTime
         // 设置播放器，播放计算出的时间
@@ -118,6 +135,16 @@ Page({
         })
         // 当前正在滑动
         this.data.isSliderChanging = true
+    },
+    // 播放暂停
+    onPlayOrPauseTap() {
+        if (!audioContext.paused) {
+            audioContext.pause()
+            this.setData({ isPlaying: false })
+        } else {
+            audioContext.play()
+            this.setData({ isPlaying: true })
+        }
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
