@@ -29,6 +29,7 @@ Page({
         isWaiting: false,
         isPlaying: true,
         lyricInfos: [],
+        lyricScrollTop:0, //歌词滚动位置
     },
 
     /**
@@ -69,7 +70,11 @@ Page({
             }
             if (index === this.data.currentLyricIndex) return
             const currentLyricText = this.data.lyricInfos[index].text
-            this.setData({ currentLyricText, currentLyricIndex: index })
+            this.setData({ 
+                currentLyricText, 
+                currentLyricIndex: index ,
+                lyricScrollTop:35 * index
+            })
         })
         audioContext.onWaiting(() => {
             audioContext.pause()

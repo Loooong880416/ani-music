@@ -29,13 +29,7 @@
             {{currentLyricText}}
         </view>
         <view class="progress">
-            <slider 
-            class="slider" 
-            block-size="12" 
-            value="{{sliderValue}}" 
-            bindchange="onSliderChange"
-            bindchanging="onSliderChanging"
-            />
+            <slider class="slider" block-size="12" value="{{sliderValue}}" bindchange="onSliderChange" bindchanging="onSliderChanging" />
             <view class="time">
                 <view class="current">{{fmt.formatTime(currentTime)}}</view>
                 <view class="duration">{{fmt.formatTime(durationTime)}}</view>
@@ -49,5 +43,18 @@
             <image class="btn list" src="/assets/images/player/play_music.png" />
         </view>
     </swiper-item>
-    <swiper-item>歌词</swiper-item>
+    <swiper-item>
+        <scroll-view 
+        class="lyric-list" 
+        scroll-y
+        scroll-top="{{lyricScrollTop}}"
+        scroll-with-animation
+        >
+            <block wx:for="{{lyricInfos}}" wx:key="time">
+                <view class="item {{currentLyricIndex === index ? 'actived' : ''}}" style="padding-top:{{index === 0? (contentHeight/2-180):0}}px;padding-bottom:{{index === lyricInfos.length - 1? (contentHeight/2+36):0}}px;">
+                    {{item.text}}
+                </view>
+            </block>
+        </scroll-view>
+    </swiper-item>
 </swiper>
