@@ -75,11 +75,13 @@ const playerStore = new HYEventStore({
                     ctx.currentLyricText = currentLyricText
                     ctx.currentLyricIndex = index
                 })
-                audioContext.onWaiting(() => {
-                    audioContext.pause()
-                })
+                // audioContext.onWaiting(() => {
+                //     console.log('先暂停')
+                //     audioContext.pause()
+                // })
                 audioContext.onCanplay(() => {
                     audioContext.play()
+                    ctx.isPlaying = true
                 })
                 audioContext.onEnded(() => {
                     // 单曲循环就不切换下一首

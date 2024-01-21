@@ -86,7 +86,7 @@ Page({
         this.data.isWaiting = true
         setTimeout(() => {
             this.data.isWaiting = false
-        }, 500)
+        }, 1500)
         const value = event.detail.value
         const currentTime = value / 100 * this.data.durationTime
         // 设置播放器，播放计算出的时间
@@ -109,6 +109,7 @@ Page({
     }, 100),
     // 播放暂停
     onPlayOrPauseTap() {
+        console.log("点击播放暂停")
         playStore.dispatch("playMusicStatusAction")
     },
     onPrevBtnTap() {
