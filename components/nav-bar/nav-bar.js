@@ -27,7 +27,9 @@ Component({
      * 组件的方法列表
      */
     methods: {
-
+        onLeftClick(){
+            this.triggerEvent("leftClick")
+        }
     },
     lifetimes: {
         attached() {

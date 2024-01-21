@@ -2,6 +2,7 @@
 import rankingStore from "../../store/rankingStore"
 import pinnacleStore from "../../store/pinnacleStore"
 import { getPlayListDetail } from "../../service/request/music"
+import playerStore from "../../store/playStore"
 
 Page({
 
@@ -41,6 +42,10 @@ Page({
         this.setData({
             songInfo:res.playlist
         })
+    },
+    // wxml事件监听
+    onSongItemTap(){
+        playerStore.setState("playSongList",this.data.songInfo.tracks)
     },
     handleRanking(value) {
         if (this.data.type === "recommend") {

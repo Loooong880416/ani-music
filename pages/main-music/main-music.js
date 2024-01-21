@@ -9,6 +9,7 @@ import {
 } from "../../utils/query-select"
 import throttle from "../../utils/throttle"
 import rankingStore from "../../store/rankingStore"
+import playerStore from "../../store/playStore"
 import pinnacleStore, { rankingsMaps } from "../../store/pinnacleStore"
 
 const querySelectThrottle = throttle(querySelect)
@@ -83,6 +84,11 @@ Page({
         wx.navigateTo({
             url: '/pages/detail-song/detail-song?type=recommend',
         })
+    },
+    onSongItemTap(event){
+        const index = event.currentTarget.dataset.index
+        playerStore.setState("playSongList",this.data.recommendSongs)
+        playerStore.setState("playSongIndex",index)
     },
 
     // 从store中获取数据
