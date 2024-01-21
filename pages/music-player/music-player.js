@@ -51,16 +51,9 @@ Page({
         })
 
         const id = options.id
-
-        // 根据id播放歌曲
-        const throttlUpdateProgress = throttle(this.updateProgress, 500, { leading: false })
-
-        // 没有滑动滑块时更新歌曲的进度
-        if (!this.data.isSliderChanging && !this.data.isWaiting) {
-            throttlUpdateProgress()
+        if(id){
+            playStore.dispatch("playMusicWithSongIdAction", id)
         }
-        // this.setupPlaySong(id)
-        playStore.dispatch("playMusicWithSongIdAction", id)
 
         // 获取store共享数据
         playStore.onStates(["playSongList", "playSongIndex"], this.getPlaySongInfosHandler)

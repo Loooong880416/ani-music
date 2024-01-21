@@ -20,8 +20,8 @@
     </view>
 </view>
 
-<menu-area title="热门歌单" menuList="{{hotSongList}}"/>
-<menu-area title="推荐歌单" menuList="{{recommendMenuList}}"/>
+<menu-area title="热门歌单" menuList="{{hotSongList}}" />
+<menu-area title="推荐歌单" menuList="{{recommendMenuList}}" />
 
 <!-- 巅峰榜 -->
 <view class="ranking" wx:if="{{isRankingData}}">
@@ -30,5 +30,18 @@
         <block wx:for="{{rankingInfos}}" wx:key="id">
             <ranking-item itemData="{{item}}" key="{{index}}" />
         </block>
+    </view>
+</view>
+
+<!-- 播放工具栏 -->
+<view class="play-bar-placeholder" wx:if="{{currentSong.name || isPlaying}}"></view>
+<view class="play-bar" wx:if="{{currentSong.name || isPlaying}}">
+    <view class="left">
+        <image class="album album-anim" src="{{currentSong.al.picUrl}}" style="animation-play-state: {{isPlaying ?'running':'paused'}};" bind:tap="onPlayBarAlbumTap" />
+        <view class="name">{{currentSong.name}}</view>
+    </view>
+    <view class="right">
+        <image class="play" src="/assets/images/music/{{ isPlaying ? 'pause': 'play' }}_icon.png" bindtap="onPlayOrPauseBtnTap" />
+        <image class="icon" src="/assets/images/music/playlist_icon.png"></image>
     </view>
 </view>

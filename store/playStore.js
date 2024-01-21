@@ -79,7 +79,7 @@ const playerStore = new HYEventStore({
                     audioContext.pause()
                 })
                 audioContext.onCanplay(() => {
-                    // audioContext.play()
+                    audioContext.play()
                 })
                 audioContext.onEnded(() => {
                     // 单曲循环就不切换下一首
@@ -94,10 +94,10 @@ const playerStore = new HYEventStore({
         playMusicStatusAction(ctx) {
             if (!audioContext.paused) {
                 audioContext.pause()
-                ctx.isFirstPlay = false
+                ctx.isPlaying = false
             } else {
                 audioContext.play()
-                ctx.isFirstPlay = true
+                ctx.isPlaying = true
             }
         },
         changePlayModeAction(ctx) {

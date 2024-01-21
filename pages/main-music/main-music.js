@@ -13,6 +13,7 @@ import playerStore from "../../store/playStore"
 import pinnacleStore, { rankingsMaps } from "../../store/pinnacleStore"
 
 const querySelectThrottle = throttle(querySelect)
+const app = getApp()
 
 Page({
 
@@ -20,6 +21,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        screenWidth: 375,
         searchValue: "",
         banners: [],
         bannerHeight: 0,
@@ -29,7 +31,10 @@ Page({
         recommendMenuList: [],//推荐歌单
         // 巅峰榜数据
         rankingInfos: {},
-        isRankingData: false
+        isRankingData: false,
+
+        currentSong: {}, //当前正在播放的歌曲
+        isPlaying: false
     },
 
     /**
@@ -49,6 +54,11 @@ Page({
         for (const key in rankingsMaps) {
             pinnacleStore.onState(key, this.getRankingHandler(key))
         }
+
+        playerStore.onStates(["currentSong", "isPlaying"], this.handlePlayInfos)
+
+        // 获取屏幕的尺寸
+        this.setData({ screenWidth: app.globalData.screenWidth })
     },
     //   轮播图
     async fetchMusiceBanner() {
@@ -85,11 +95,19 @@ Page({
             url: '/pages/detail-song/detail-song?type=recommend',
         })
     },
-    onSongItemTap(event){
+    onSongItemTap(event) {
         const index = event.currentTarget.dataset.index
-        playerStore.setState("playSongList",this.data.recommendSongs)
-        playerStore.setState("playSongIndex",index)
+        playerStore.setState("playSongList", this.data.recommendSongs)
+        playerStore.setState("playSongIndex", index)
     },
+    onPlayOrPauseBtnTap() {
+        playerStore.dispatch("playMusicStatusAction")
+    },
+    onPlayBarAlbumTap() {
+        wx.navigateTo({
+          url: '/pages/music-player/music-player',
+        })
+      },
 
     // 从store中获取数据
     handlerRecommendSongs(value) {
@@ -112,8 +130,18 @@ Page({
             })
         }
     },
+    handlePlayInfos({ currentSong, isPlaying }) {
+        if (currentSong) {
+            this.setData({ currentSong })
+        }
+        if (isPlaying !== undefined) {
+            this.setData({ isPlaying })
+        }
+    },
     onUnload() {
         recommendSongs.offState("rankingSongsInfo", this.handlerRecommendSongs)
         pinnacleStore.offState("")
+
+        playerStore.offStates(["currentSong", "isPlaying"], this.handlePlayInfos)
     }
 })
