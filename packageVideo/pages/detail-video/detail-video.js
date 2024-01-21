@@ -1,7 +1,7 @@
 // pages/detail-video/detail-video.js
 import {
     getMVUrl, getMVInfo, getMVRelated
-} from "../../service/request/video"
+} from "../../../service/request/video"
 Page({
     data: {
         id: 0,

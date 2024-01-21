@@ -36,11 +36,11 @@
             </view>
         </view>
         <view class="controls">
-            <image class="btn mode" src="/assets/images/player/play_{{playModeName}}.png" bindtap="onModeBtnTap" />
-            <image class="btn prev" src="/assets/images/player/play_prev.png" bind:tap="onPrevBtnTap" />
-            <image class="btn play" src="/assets/images/player/play_{{ isPlaying ? 'pause': 'resume' }}.png" bindtap="onPlayOrPauseTap" />
-            <image class="btn next" src="/assets/images/player/play_next.png" bind:tap="onNextBtnTap" />
-            <image class="btn list" src="/assets/images/player/play_music.png" />
+            <image class="btn mode" src="/packagePlayer/assets/images/player/play_{{playModeName}}.png" bindtap="onModeBtnTap" />
+            <image class="btn prev" src="/packagePlayer/assets/images/player/play_prev.png" bind:tap="onPrevBtnTap" />
+            <image class="btn play" src="/packagePlayer/assets/images/player/play_{{ isPlaying ? 'pause': 'resume' }}.png" bindtap="onPlayOrPauseTap" />
+            <image class="btn next" src="/packagePlayer/assets/images/player/play_next.png" bind:tap="onNextBtnTap" />
+            <image class="btn list" src="/packagePlayer/assets/images/player/play_music.png" />
         </view>
     </swiper-item>
     <swiper-item>

@@ -1,8 +1,6 @@
 // pages/music-player/music-player.js
-import { getSongDetail, getSongLyric } from "../../service/request/player"
-import throttle from "../../utils/throttle"
-import { parseLyric } from "../../utils/parse-lyric"
-import playStore, { audioContext } from "../../store/playStore"
+import throttle from "../../../utils/throttle"
+import playStore, { audioContext } from "../../../store/playStore"
 
 const app = getApp()
 

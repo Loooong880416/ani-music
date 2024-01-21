@@ -9,13 +9,6 @@
     "miniprogram": {
       "list": [
         {
-          "name": "音乐播放页面",
-          "pathName": "pages/music-player/music-player",
-          "query": "id=1985338375",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
           "name": "音乐页面",
           "pathName": "pages/main-music/main-music",
           "query": "",
@@ -33,13 +26,6 @@
           "name": "视频详情",
           "pathName": "pages/detail-video/detail-video",
           "query": "id=14688523",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "视频页面",
-          "pathName": "pages/main-video/main-video",
-          "query": "",
           "launchMode": "default",
           "scene": null
         }
