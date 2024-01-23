@@ -1,28 +1,53 @@
 /* pages/main-profile/main-profile.wxss */
-page{
+page {
     box-sizing: border-box;
     padding: 30rpx;
     background-color: #f3f3f3;
 }
 
-.section{
+.section {
     background-color: #fff;
     border-radius: 10rpx;
     padding: 30rpx;
 }
 
-.userinfo{
+.userinfo {
     display: flex;
     align-items: center;
 }
 
-.userinfo .avatar{
+.userinfo .avatar {
     width: 80rpx;
     height: 80rpx;
     border-radius: 50%;
 }
 
-.userinfo .nickname{
+.userinfo .nickname {
     margin-left: 20rpx;
     font-size: 30rpx;
+}
+
+/* 操作 */
+.operation {
+    display: flex;
+    justify-content: space-around;
+
+    margin-top: 40rpx;
+}
+
+
+.operation .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.operation .item .icon {
+    width: 60rpx;
+    height: 60rpx;
+}
+
+.operation .item .text {
+    font-size: 24rpx;
+    margin-top: 16rpx;
 }

@@ -3,6 +3,11 @@ Page({
     data:{
         userInfo:{},
         isLogin:false,
+        tabs: [
+            { name: "我的收藏", type: "favor" },
+            { name: "喜欢的歌", type: "like" },
+            { name: "最近播放", type: "history" },
+          ],
     },
     onLoad(){
         // 用户是否登录
