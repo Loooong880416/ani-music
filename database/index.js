@@ -19,11 +19,11 @@ class aniCollection {
         }
     }
 
-    update(condition, isDoc = true) {
+    update(condition, data, isDoc = true) {
         if (isDoc) {
-            return this.collection.doc(condition).update()
+            return this.collection.doc(condition).update(data)
         } else {
-            return this.collection.where(condition).update()
+            return this.collection.where(condition).update(data)
         }
     }
 
@@ -38,3 +38,5 @@ class aniCollection {
 
 export const favorCollection = new aniCollection("c_favor")
 export const likeCollection = new aniCollection("c_like")
+export const historyCollection = new aniCollection("c_history")
+export const menuCollection = new aniCollection("c_menu")

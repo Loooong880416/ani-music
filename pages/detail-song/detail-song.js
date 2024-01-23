@@ -4,6 +4,7 @@ import pinnacleStore from "../../store/pinnacleStore"
 import { getPlayListDetail } from "../../service/request/music"
 import playerStore from "../../store/playStore"
 
+const db = wx.cloud.database()
 Page({
 
     /**
@@ -35,17 +36,33 @@ Page({
             const id = options.id
             this.data.id = id
             this.fetchMenuSongInfo()
+        } else if (type === "profile") { //个人中心的tab
+            const tabname = options.tabname
+            const title = options.title
+            this.handleProfileTabInfo(tabname, title)
         }
     },
     async fetchMenuSongInfo() {
         const res = await getPlayListDetail(this.data.id)
         this.setData({
-            songInfo:res.playlist
+            songInfo: res.playlist
+        })
+    },
+    async handleProfileTabInfo(tabname,title) {
+        // 1.动态获取集合
+        const collection = db.collection(`c_${tabname}`)
+        // 2.获取数据的结果
+        const res = await collection.get()
+        this.setData({
+            songInfo: {
+                name: title,
+                tracks: res.data
+            }
         })
     },
     // wxml事件监听
-    onSongItemTap(){
-        playerStore.setState("playSongList",this.data.songInfo.tracks)
+    onSongItemTap() {
+        playerStore.setState("playSongList", this.data.songInfo.tracks)
     },
     handleRanking(value) {
         if (this.data.type === "recommend") {
