@@ -1,7 +1,7 @@
 {
   "usingComponents": {
     "area-header": "/components/area-header/area-header",
-    "menu-item-v2": "/components/song-item-v2/song-item-v2",
+    "menu-item": "/components/menu-item/menu-item",
     "van-icon": "@vant/weapp/icon/index",
     "van-dialog": "@vant/weapp/dialog/index"
   }

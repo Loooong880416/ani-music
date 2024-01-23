@@ -1,4 +1,4 @@
-const db = wx.cloud.database()
+export const db = wx.cloud.database()
 class aniCollection {
     constructor(collectionName) {
         this.collection = db.collection(collectionName)
@@ -21,9 +21,9 @@ class aniCollection {
 
     update(condition, data, isDoc = true) {
         if (isDoc) {
-            return this.collection.doc(condition).update(data)
+            return this.collection.doc(condition).update({ data })
         } else {
-            return this.collection.where(condition).update(data)
+            return this.collection.where(condition).update({ data })
         }
     }
 

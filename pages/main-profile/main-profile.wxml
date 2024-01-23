@@ -24,7 +24,7 @@
     </view>
     <view class="list">
       <block wx:for="{{menuList}}" wx:key="name">
-        <menu-item-v2 itemData="{{item}}"/>
+        <menu-item itemData="{{item}}"/>
       </block>
     </view>
   </view>

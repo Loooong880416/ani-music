@@ -1,5 +1,5 @@
 // components/song-item-v2/song-item-v2.js
-import { favorCollection, likeCollection } from "../../database/index"
+import { favorCollection, likeCollection, menuCollection, db } from "../../database/index"
 
 Component({
 
@@ -14,6 +14,10 @@ Component({
         index: {
             type: Number,
             value: -1
+        },
+        menuList: {
+            type: Array,
+            value: []
         }
     },
 
@@ -36,13 +40,13 @@ Component({
         },
         onMoreCLick() {
             wx.showActionSheet({
-              itemList: this.data.actions,
-              fail: () => {},
-              success: (res) => {
-                this.handleOperationIndex(res.tapIndex)
-              }
+                itemList: this.data.actions,
+                fail: () => { },
+                success: (res) => {
+                    this.handleOperationIndex(res.tapIndex)
+                }
             })
-          },
+        },
         async handleOperationIndex(index) {
             let res = null
             let title = 0
@@ -52,16 +56,42 @@ Component({
                     title = '收藏'
                     break
                 case 1:
-                    res = await likeCollection.add(this.properties.itemData )
+                    res = await likeCollection.add(this.properties.itemData)
                     title = '喜欢'
                     break
+                case 2:
+                    const names = this.properties.menuList.map(item => item.name)
+                    wx.showActionSheet({
+                        itemList: names,
+                        success: (res) => {
+                            const menuIndex = res.tapIndex
+                            this.handMenuIndex(menuIndex)
+                        }
+                    })
+                    return
             }
-            if(res){
+            if (res) {
                 wx.showToast({
-                  title: `${title}成功`,
+                    title: `${title}成功`,
                 })
             }
-        }
+        },
+        async handMenuIndex(index) {
+            // 1.获取要添加进去的歌单
+            const menuItem = this.properties.menuList[index]
+
+            // 2.向menuItem歌单中songList中添加一条数据
+            const data = this.properties.itemData
+            const cmd = db.command
+            const res = await menuCollection.update(menuItem._id, {
+                songList: cmd.push(data)
+            })
+            if (res) {
+                wx.showToast({
+                    title: '歌曲添加至歌单成功',
+                })
+            }
+        },
     },
     options: {
         addGlobalClass: true

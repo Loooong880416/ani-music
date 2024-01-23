@@ -30,6 +30,9 @@ Page({
          // 共享歌单数据
          menuStore.onState("menuList",this.handleMenuList)
     },
+    onShow(){
+        menuStore.dispatch("fetchMenuListAction")
+    },
     onItemTap(event) {
         const item = event.currentTarget.dataset.item
         wx.navigateTo({
