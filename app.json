@@ -1,47 +1,57 @@
 {
-    "pages": [
-        "pages/main-music/main-music",
-        "pages/main-video/main-video",
-        "pages/detail_search/detail_search",
-        "pages/detail-song/detail-song",
-        "pages/detail-menu/detail-menu"
-    ],
-    "subPackages": [{
-            "root": "packageVideo",
-            "name": "video",
-            "pages": [
-                "pages/detail-video/detail-video"
-            ]
-        },
-        {
-            "root": "packagePlayer",
-            "name": "player",
-            "pages": [
-                "pages/music-player/music-player"
-            ]
-        }
-    ],
-    "window": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "AniMusic",
-        "backgroundTextStyle": "dark",
-        "navigationBarBackgroundColor": "#fff"
+  "pages": [
+    "pages/main-music/main-music",
+    "pages/main-video/main-video",
+    "pages/detail_search/detail_search",
+    "pages/detail-song/detail-song",
+    "pages/detail-menu/detail-menu",
+    "pages/main-profile/main-profile"
+  ],
+  "subPackages": [
+    {
+      "root": "packageVideo",
+      "name": "video",
+      "pages": [
+        "pages/detail-video/detail-video"
+      ]
     },
-    "tabBar": {
-        "list": [{
-                "pagePath": "pages/main-music/main-music",
-                "text": "音乐",
-                "iconPath": "assets/images/tabbar/music_normal.png",
-                "selectedIconPath": "assets/images/tabbar/music_active.png"
-            },
-            {
-                "pagePath": "pages/main-video/main-video",
-                "text": "视频",
-                "iconPath": "assets/images/tabbar/video_normal.png",
-                "selectedIconPath": "assets/images/tabbar/video_active.png"
-            }
-        ]
-    },
-    "style": "v2",
-    "sitemapLocation": "sitemap.json"
+    {
+      "root": "packagePlayer",
+      "name": "player",
+      "pages": [
+        "pages/music-player/music-player"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "AniMusic",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#fff"
+  },
+  "tabBar": {
+    "selectedColor": "#bd2c18", 
+    "list": [
+      {
+        "pagePath": "pages/main-music/main-music",
+        "text": "音乐",
+        "iconPath": "assets/images/tabbar/music_normal.png",
+        "selectedIconPath": "assets/images/tabbar/music_active.png"
+      },
+      {
+        "pagePath": "pages/main-video/main-video",
+        "text": "视频",
+        "iconPath": "assets/images/tabbar/video_normal.png",
+        "selectedIconPath": "assets/images/tabbar/video_active.png"
+      },
+      {
+        "pagePath": "pages/main-profile/main-profile",
+        "text": "我的",
+        "iconPath": "assets/images/tabbar/profile_fill_normal.png",
+        "selectedIconPath": "assets/images/tabbar/profile_fill.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
 }

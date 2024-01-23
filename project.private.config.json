@@ -9,6 +9,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "个人中心",
+          "pathName": "pages/main-profile/main-profile",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "音乐页面",
           "pathName": "pages/main-music/main-music",
           "query": "",
